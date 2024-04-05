@@ -94,6 +94,5 @@ while running:
     screen.blit(playerImg, (playerX, playerY))
     move_player()
     shou_enemy()
-    shou_bulletgi()
-
+    shou_bullet()
     pygame.display.update()
