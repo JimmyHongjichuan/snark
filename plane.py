@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 
 pygame.init()
@@ -14,13 +15,26 @@ playerY = 500
 playerStep = 2
 number_of_enemies = 6
 
+score = 0
+font = pygame.font.Font('freesansbold.ttf',32)
+
+
+def shou_score():
+    text = f"Score:{score}"
+    score_render = font.render(text, True, (0, 255, 0))
+    screen.blit(score_render, (10, 10))
+
 
 class Enemy:
     def __init__(self):
         self.img = pygame.image.load("enemy.png")
         self.x = random.randint(200, 600)
         self.y = random.randint(50, 250)
-        self.step = random.randint(2, 6)
+        self.step = random.randint(2, 4)
+
+    def reset(self):
+        self.x = random.randint(200, 600)
+        self.y = random.randint(50, 200)
 
 
 enemies = []
@@ -28,12 +42,28 @@ for i in range(number_of_enemies):
     enemies.append(Enemy())
 
 
+def distance(bx, by, ex, ey):
+    a = bx - ex
+    b = by - ey
+    return math.sqrt(a*a + b*b)
+print(distance(1,1,4,5))
+
+
 class Bullet:
     def __init__(self):
         self.img = pygame.image.load("bullet.png")
-        self.x = playerX
+        self.x = playerX + 8
         self.y = playerY + 10
-        self.step = 10
+        self.step = 1
+
+    def hit(self):
+        global score
+        for e in enemies:
+            if distance(self.x, self.y, e.x, e.y) < 30:
+                bullets.remove(self)
+                e.reset()
+                score += 1
+                print(score)
 
 
 bullets = []
@@ -42,6 +72,7 @@ bullets = []
 def shou_bullet():
     for b in bullets:
         screen.blit(b.img, (b.x, b.y))
+        b.hit()
         b.y -= b.step
         if b.y < 0:
             bullets.remove(b)
@@ -76,6 +107,7 @@ def shou_bullets():
 
 while running:
     screen.blit(bgImg, (0, 0))
+    shou_score()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
