@@ -16,7 +16,7 @@ playerStep = 2
 number_of_enemies = 6
 
 score = 0
-font = pygame.font.Font('freesansbold.ttf',32)
+font = pygame.font.Font('freesansbold.ttf', 32)
 
 
 def shou_score():
@@ -46,7 +46,9 @@ def distance(bx, by, ex, ey):
     a = bx - ex
     b = by - ey
     return math.sqrt(a*a + b*b)
-print(distance(1,1,4,5))
+
+
+print(distance(1, 1, 4, 5))
 
 
 class Bullet:
